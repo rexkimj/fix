@@ -3,10 +3,13 @@ package com.okcoin.fix;
 import java.io.IOException;
 
 import org.apache.log4j.Logger;
+
+
 import quickfix.DoNotSend;
 import quickfix.FieldNotFound;
 import quickfix.IncorrectDataFormat;
 import quickfix.IncorrectTagValue;
+import quickfix.Message;
 import quickfix.RejectLogon;
 import quickfix.Session;
 import quickfix.SessionID;
@@ -18,64 +21,114 @@ import quickfix.UnsupportedMessageType;
  * @author OKCOIN
  */
 public class OKClientApplication  implements quickfix.Application {
-	//if you request marketdata you can set PARTNER and SECRET_KEY as "1"
-	public static final String PARTNER = "your partner ";
-	public static final String SECRET_KEY = "your securityKey";
+	
+	
 	
 	private static final Logger log = Logger.getLogger(OKClientApplication.class);
 	
+	public void onMessage(Message message, SessionID sessionID)
+			throws FieldNotFound, UnsupportedMessageType, IncorrectTagValue {
+		System.out.println("-----------onMessage-----------");
+	}
+
 	public void fromAdmin(quickfix.Message msg, SessionID sessionID)
 			throws FieldNotFound, IncorrectDataFormat, IncorrectTagValue,
 			RejectLogon {
-		log.info("receivedType:"+msg.getHeader().getString(35));
-		log.info(sessionID+"------ fromAdmin--------"+msg.toString());
+		System.out.println("receivedType:" + msg.getHeader().getString(35));
+		if ("0".equals(msg.getHeader().getString(35))) {
+			System.out.println(sessionID
+					+ "------client fromAdmin----收到一个心跳消息 ----"
+					+ msg.toString());
+		} else
+			System.out.println(sessionID
+					+ "------client fromAdmin----收到一个认证消息 ----"
+					+ msg.toString());
 	}
 
 	public void fromApp(quickfix.Message msg, SessionID sessionID)
 			throws FieldNotFound, IncorrectDataFormat, IncorrectTagValue,
 			UnsupportedMessageType {
-		
-		log.info("receivedType:"+msg.getHeader().getString(35));
-		log.info(sessionID+"------ fromApp---------"+msg.toString());
+		System.out.println("receivedType:" + msg.getHeader().getString(35));
+		System.out.println(sessionID + "------client fromApp-----消息接收----"
+				+ msg.toString());
 	}
 
 	public void onCreate(SessionID sessionID) {
-		try {
-			//there should invoke reset()
-			Session.lookupSession(sessionID).reset();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		log.info(sessionID+"------ onCreate Session-------"+sessionID);
+		System.out.println(sessionID + "------client onCreate 创建Session-------"
+				+ sessionID);
 	}
 
-	
-	
 	public void onLogon(final SessionID sessionID) {
 		
 		new Thread(new Runnable() {
+
 			@Override
 			public void run() {
-				quickfix.Message message = OKMarketDataRequest.create24HTickerRequest();
-				Session.lookupSession(sessionID).send(message);
+				Session session = Session.lookupSession(sessionID);
+				Message message = null;
+				
+				// 订单记录
+				// message = OKMarketDataRequest.createOrderBookRequest();
+				// 盘口数据
+				 message = OKMarketDataRequest.create24HTickerRequest();
+				// 历史交易数据
+				//message = OKMarketDataRequest.createLiveTradesRequest();
+				 
+				// 用户数据请求
+				// message = OKTradingRequest.createUserAccountRequest();
+				 
+                // 创建新订单
+                //try {
+				// message = OKTradingRequest.createOrderBookRequest();
+				// } catch (IOException e) {
+				//System.out.println(e.getMessage());
+				//}
+				
+				 // 取消订单请求
+			     // message = OKTradingRequest.createOrderCancelRequest();
+				 // 订单状态请求
+				 // message = OKTradingRequest.createOrderStatusRequest();
+				 // 交易历史结果 – 交易资产报告
+				 //message = OKTradingRequest.createTradeHistoryRequest();
+				session.send(message);
 			}
 		}).start();
-		
-		log.info(sessionID+"------ onLogon-------"+sessionID);
+
+
+		System.out.println(sessionID + "------client onLogon----登录成功---"
+				+ sessionID);
 	}
 
 	public void onLogout(SessionID sessionID) {
-		log.info(sessionID+"------ onLogout -------"+sessionID);
+		System.out.println(sessionID + "------client onLogout 退出-------"
+				+ sessionID);
+		// System.exit(0);
 	}
 
 	public void toAdmin(quickfix.Message msg, SessionID sessionID) {
-		msg.setField(new StringField(553, PARTNER));
-		msg.setField(new StringField(554, SECRET_KEY));
-		log.info(sessionID+"------ toAdmin---------"+msg.toString());
+		//msg.setField(new StringField(553, MessageValidation.PARTNER));
+     	msg.setField(new StringField(553, AccountUtil.apiKey));
+		msg.setField(new StringField(554, AccountUtil.sercretKey));
+
+		System.out.println("-------------toAdmin");
+		try {
+			if (msg.getHeader().getInt(35) == 0) {
+				System.out.println(sessionID
+						+ "------client toAdmin-----发送心跳----" + msg.toString());
+			} else
+				System.out.println(sessionID
+						+ "------client toAdmin-----登陆认证----" + msg.toString());
+		} catch (FieldNotFound e) {
+			e.printStackTrace();
+		}
 	}
 
-	public void toApp(quickfix.Message msg, SessionID sessionID) throws DoNotSend {
-		log.info(sessionID+"------ toApp-----------"+msg.toString());
+	public void toApp(quickfix.Message msg, SessionID sessionID)
+			throws DoNotSend {
+		System.out.println(sessionID + "------client toApp-------业务逻辑----"
+				+ msg.toString());
+
 	}
+
 
 }

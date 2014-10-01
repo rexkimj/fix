@@ -34,7 +34,7 @@ public class OKTradingRequest {
 		//this new Order request type (D)
 		quickfix.fix44.NewOrderSingle newOrderSingleRequest = new quickfix.fix44.NewOrderSingle();
 		//In there you should set your partner and securitykey must contain a comma
-		newOrderSingleRequest.set(new Account("your partner "+","+"your securitykey"));
+		newOrderSingleRequest.set(new Account(AccountUtil.apiKey+","+AccountUtil.sercretKey));
 		//this is your unique id you can fill any string
 		newOrderSingleRequest.set(new ClOrdID("QQAAAA"));
 		//the amount you want to operate (buy or sell)
