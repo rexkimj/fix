@@ -17,14 +17,15 @@ public class OKMarketDataRequest {
 	 * @return
 	 */
 	public static Message createOrderBookRequest() {
-		quickfix.fix44.MarketDataRequest orderBookRequest = new quickfix.fix44.MarketDataRequest();
-		quickfix.fix44.MarketDataRequest.NoRelatedSym noRelatedSym = new quickfix.fix44.MarketDataRequest.NoRelatedSym();
-		noRelatedSym.set(new Symbol("BTC/CNY"));
-		orderBookRequest.addGroup(noRelatedSym);
+	    quickfix.fix44.MarketDataRequest orderBookRequest = new quickfix.fix44.MarketDataRequest();
+	    quickfix.fix44.MarketDataRequest.NoRelatedSym noRelatedSym = new quickfix.fix44.MarketDataRequest.NoRelatedSym();
+	    noRelatedSym.set(new Symbol("BTC/CNY"));
+	    orderBookRequest.addGroup(noRelatedSym);
 		
-		orderBookRequest.set(new MDReqID("123"));
-		orderBookRequest.set(new SubscriptionRequestType('0'));
-		orderBookRequest.set(new MarketDepth(0));
+	    orderBookRequest.set(new MDReqID("123"));
+	    orderBookRequest.set(new SubscriptionRequestType('0')); //0 = Snapshot   1 = Snapshot + Subscribe   2 Unsubscribe 
+	    orderBookRequest.set(new MDUpdateType(0));// Subscribe Type 0=Full Refresh 1=Incremental Refresh
+	    orderBookRequest.set(new MarketDepth(0));
 		
 	    quickfix.fix44.MarketDataRequest.NoMDEntryTypes group1 = new quickfix.fix44.MarketDataRequest.NoMDEntryTypes();
 	    group1.set(new MDEntryType('0'));
@@ -42,14 +43,14 @@ public class OKMarketDataRequest {
 	 * @return
 	 */
 	public static Message create24HTickerRequest() {
-		quickfix.fix44.MarketDataRequest tickerRequest = new quickfix.fix44.MarketDataRequest();
-		quickfix.fix44.MarketDataRequest.NoRelatedSym noRelatedSym = new quickfix.fix44.MarketDataRequest.NoRelatedSym();
-		noRelatedSym.set(new Symbol("BTC/CNY"));
-		tickerRequest.addGroup(noRelatedSym);
+	    quickfix.fix44.MarketDataRequest tickerRequest = new quickfix.fix44.MarketDataRequest();
+	    quickfix.fix44.MarketDataRequest.NoRelatedSym noRelatedSym = new quickfix.fix44.MarketDataRequest.NoRelatedSym();
+	    noRelatedSym.set(new Symbol("BTC/CNY"));
+	    tickerRequest.addGroup(noRelatedSym);
 		
-		tickerRequest.set(new MDReqID("123"));
-		tickerRequest.set(new SubscriptionRequestType('0'));
-		tickerRequest.set(new MarketDepth(0));
+	    tickerRequest.set(new MDReqID("123"));
+	    tickerRequest.set(new SubscriptionRequestType('0'));
+	    tickerRequest.set(new MarketDepth(0));
 		
 	    quickfix.fix44.MarketDataRequest.NoMDEntryTypes group1 = new quickfix.fix44.MarketDataRequest.NoMDEntryTypes();
 	    group1.set(new MDEntryType('4'));
@@ -82,15 +83,14 @@ public class OKMarketDataRequest {
 	 * @return
 	 */
 	public static Message createLiveTradesRequest() {
-		quickfix.fix44.MarketDataRequest liveTradesRequest = new quickfix.fix44.MarketDataRequest();
-		quickfix.fix44.MarketDataRequest.NoRelatedSym noRelatedSym = new quickfix.fix44.MarketDataRequest.NoRelatedSym();
+	    quickfix.fix44.MarketDataRequest liveTradesRequest = new quickfix.fix44.MarketDataRequest();
+	    quickfix.fix44.MarketDataRequest.NoRelatedSym noRelatedSym = new quickfix.fix44.MarketDataRequest.NoRelatedSym();
 		
-		noRelatedSym.set(new Symbol("BTC/CNY"));
-		liveTradesRequest.addGroup(noRelatedSym);
-		liveTradesRequest.set(new MDReqID("123"));
-		liveTradesRequest.set(new SubscriptionRequestType('0'));
-		liveTradesRequest.set(new MarketDepth(0));
-		
+	    noRelatedSym.set(new Symbol("BTC/CNY"));
+	    liveTradesRequest.addGroup(noRelatedSym);
+	    liveTradesRequest.set(new MDReqID("123"));
+	    liveTradesRequest.set(new SubscriptionRequestType('0'));
+	    liveTradesRequest.set(new MarketDepth(0));
 		
 	    quickfix.fix44.MarketDataRequest.NoMDEntryTypes group = new quickfix.fix44.MarketDataRequest.NoMDEntryTypes();
 	    group.set(new MDEntryType('2'));
