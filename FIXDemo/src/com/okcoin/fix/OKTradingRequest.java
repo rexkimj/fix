@@ -56,8 +56,8 @@ public class OKTradingRequest {
 		newOrderSingleRequest.set(new Symbol("LTC/CNY"));
 		//time
 		newOrderSingleRequest.set(new TransactTime());
-	    return newOrderSingleRequest;
-    }
+	        return newOrderSingleRequest;
+        }
 	
 	
 	/**
@@ -71,7 +71,7 @@ public class OKTradingRequest {
 		OrderCancelRequest.set(new Symbol("BTC/CNY"));		//BTC/CNY or LTC/CNY
 		OrderCancelRequest.set(new TransactTime(new Date()));
 	    return OrderCancelRequest;
-    }
+       }
 	
 	/**
 	 * 订单状态请求
@@ -90,8 +90,8 @@ public class OKTradingRequest {
 		AccountInfoRequest accountInfoRequest = new AccountInfoRequest();
 		accountInfoRequest.set(new Account("your partner"+","+"your key"));//这里可以设置可以省略
 		accountInfoRequest.set(new AccReqID("123"));
-	    return accountInfoRequest;
-    }
+	        return accountInfoRequest;
+        }
 	/**
 	 * 请求历史交易
 	 */
