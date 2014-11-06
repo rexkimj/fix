@@ -25,7 +25,7 @@ import quickfix.SocketInitiator;
 public class OKClient {
 
 	public static void main(String args[]) throws ConfigError, DoNotSend, IOException, SessionNotFound, InterruptedException{
-		OKClientApplication application = new OKClientApplication();
+	    OKClientApplication application = new OKClientApplication();
 	    InputStream inputStream = OKClient.class.getResourceAsStream("/quickfix-client.properties");
 	    SessionSettings settings = new SessionSettings(inputStream);
 	    MessageStoreFactory storeFactory = new FileStoreFactory(settings);
