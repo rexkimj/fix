@@ -88,7 +88,7 @@ public class OKTradingRequest {
 	 */
 	public static Message createUserAccountRequest() {
 		AccountInfoRequest accountInfoRequest = new AccountInfoRequest();
-		accountInfoRequest.set(new Account("your partner"+","+"your key"));//这里可以设置可以省略
+		accountInfoRequest.set(new Account(AccountUtil.apiKey+","+AccountUtil.sercretKey));//这里可以设置可以省略
 		accountInfoRequest.set(new AccReqID("123"));
 	        return accountInfoRequest;
         }
