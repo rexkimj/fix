@@ -77,15 +77,15 @@ public class OKClientApplication  implements quickfix.Application {
 				// 用户数据请求
 				// message = OKTradingRequest.createUserAccountRequest();
 				 
-                // 创建新订单
-                //try {
+                                // 创建新订单
+                                //try {
 				// message = OKTradingRequest.createOrderBookRequest();
 				// } catch (IOException e) {
 				//System.out.println(e.getMessage());
 				//}
 				
 				 // 取消订单请求
-			     // message = OKTradingRequest.createOrderCancelRequest();
+			        // message = OKTradingRequest.createOrderCancelRequest();
 				 // 订单状态请求
 				 // message = OKTradingRequest.createOrderStatusRequest();
 				 // 交易历史结果 – 交易资产报告
