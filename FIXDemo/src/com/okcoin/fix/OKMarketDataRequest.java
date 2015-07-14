@@ -24,7 +24,7 @@ public class OKMarketDataRequest {
 	public static Message createOrderBookRequest() {
 		quickfix.fix44.MarketDataRequest orderBookRequest = new quickfix.fix44.MarketDataRequest();
 		quickfix.fix44.MarketDataRequest.NoRelatedSym noRelatedSym = new quickfix.fix44.MarketDataRequest.NoRelatedSym();
-		noRelatedSym.set(new Symbol("LTC/CNY"));
+		noRelatedSym.set(new Symbol("BTC/CNY"));
 		orderBookRequest.addGroup(noRelatedSym);
 		
 		orderBookRequest.set(new MDReqID("123"));
@@ -33,11 +33,11 @@ public class OKMarketDataRequest {
 		orderBookRequest.set(new MarketDepth(0));
 		
 	    quickfix.fix44.MarketDataRequest.NoMDEntryTypes group1 = new quickfix.fix44.MarketDataRequest.NoMDEntryTypes();
-	    group1.set(new MDEntryType('1'));
+	    group1.set(new MDEntryType('0'));
 	    orderBookRequest.addGroup(group1);
 	    
 	    quickfix.fix44.MarketDataRequest.NoMDEntryTypes group2 = new quickfix.fix44.MarketDataRequest.NoMDEntryTypes();
-	    group2.set(new MDEntryType('2'));
+	    group2.set(new MDEntryType('1'));
 	    orderBookRequest.addGroup(group2);
 	    
 	    return orderBookRequest;
