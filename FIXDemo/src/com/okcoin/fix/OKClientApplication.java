@@ -1,8 +1,10 @@
 package com.okcoin.fix;
 
 import java.io.IOException;
+import java.util.Date;
 
 import org.apache.log4j.Logger;
+
 
 
 import quickfix.DoNotSend;
@@ -49,7 +51,7 @@ public class OKClientApplication  implements quickfix.Application {
 			throws FieldNotFound, IncorrectDataFormat, IncorrectTagValue,
 			UnsupportedMessageType {
 		System.out.println("receivedType:" + msg.getHeader().getString(35));
-		System.out.println(sessionID + "------client fromApp-----消息接收----"
+		System.out.println(sessionID + "------client fromApp-----消息接收----"+new Date().toLocaleString()+"  "
 				+ msg.toString());
 	}
 
@@ -59,44 +61,29 @@ public class OKClientApplication  implements quickfix.Application {
 	}
 
 	public void onLogon(final SessionID sessionID) {
+	   
+		//请求深度
+		Session session = Session.lookupSession(sessionID);
+        Message message =  OKMarketDataRequest.createOrderBookRequest();
+	    
+	    //请求行情
+        //message = OKMarketDataRequest.create24HTickerRequest();
+	  
+		// 用户数据请求
+		// message = OKTradingRequest.createUserAccountRequest();
+		 
+        // 创建新订单
+        //try {
+		// message = OKTradingRequest.createOrderBookRequest();
+		// } catch (IOException e) {}
 		
-		new Thread(new Runnable() {
-
-			@Override
-			public void run() {
-				Session session = Session.lookupSession(sessionID);
-				Message message = null;
-				
-				// 订单记录
-				// message = OKMarketDataRequest.createOrderBookRequest();
-				// 盘口数据
-				 message = OKMarketDataRequest.create24HTickerRequest();
-				// 历史交易数据
-				//message = OKMarketDataRequest.createLiveTradesRequest();
-				 
-				// 用户数据请求
-				// message = OKTradingRequest.createUserAccountRequest();
-				 
-                                // 创建新订单
-                                //try {
-				// message = OKTradingRequest.createOrderBookRequest();
-				// } catch (IOException e) {
-				//System.out.println(e.getMessage());
-				//}
-				
-				 // 取消订单请求
-			        // message = OKTradingRequest.createOrderCancelRequest();
-				 // 订单状态请求
-				 // message = OKTradingRequest.createOrderStatusRequest();
-				 // 交易历史结果 – 交易资产报告
-				 //message = OKTradingRequest.createTradeHistoryRequest();
-				session.send(message);
-			}
-		}).start();
-
-
-		System.out.println(sessionID + "------client onLogon----登录成功---"
-				+ sessionID);
+		 // 取消订单请求
+	     // message = OKTradingRequest.createOrderCancelRequest();
+		 
+         // 订单状态请求
+		 // message = OKTradingRequest.createOrderStatusRequest();
+        session.send(message);
+	
 	}
 
 	public void onLogout(SessionID sessionID) {
@@ -109,18 +96,7 @@ public class OKClientApplication  implements quickfix.Application {
 		//msg.setField(new StringField(553, MessageValidation.PARTNER));
      	msg.setField(new StringField(553, AccountUtil.apiKey));
 		msg.setField(new StringField(554, AccountUtil.sercretKey));
-
-		System.out.println("-------------toAdmin");
-		try {
-			if (msg.getHeader().getInt(35) == 0) {
-				System.out.println(sessionID
-						+ "------client toAdmin-----发送心跳----" + msg.toString());
-			} else
-				System.out.println(sessionID
-						+ "------client toAdmin-----登陆认证----" + msg.toString());
-		} catch (FieldNotFound e) {
-			e.printStackTrace();
-		}
+		
 	}
 
 	public void toApp(quickfix.Message msg, SessionID sessionID)
